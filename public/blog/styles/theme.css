@@ -1,0 +1,637 @@
+/* ====================================================
+   theme.css - 主题变量与深色模式全局覆盖
+   版本：完整版（整合自 App.vue 及各组件）
+   注意：此文件必须在 layout-1/css/styles.css 之后引入
+   ==================================================== */
+
+/* ------------------------------
+   1. 浅色模式 CSS 变量 (默认)
+   ------------------------------ */
+:root {
+  /* 背景色 */
+  --bg-body: #EDF3F3;
+  --bg-header: #ffffff;
+  --bg-card: #ffffff;
+  --bg-sidebar: #ffffff;
+  --bg-footer: #ffffff;
+
+  /* 文本颜色 */
+  --text-primary: #000000;
+  --text-secondary: #444444;
+  --text-muted: #6c757d;
+
+  /* 边框阴影 */
+  --border-color: #dddddd;
+  --card-shadow: rgba(0, 0, 0, 0.1);
+
+  /* 链接颜色 */
+  --link-color: #333333;
+  --link-hover: #000000;
+
+  /* 按钮 */
+  --btn-bg: #f0f0f0;
+  --btn-text: #111111;
+  --btn-border: #cccccc;
+  --btn-hover-bg: #e0e0e0;
+  --btn-hover-text: #000000;
+}
+
+/* ------------------------------
+   2. 深色模式 CSS 变量
+   ------------------------------ */
+body.dark-mode {
+  /* 背景色 */
+  --bg-body: #1a1e2c;
+  --bg-header: #0f1222;
+  --bg-card: #171b2a;
+  --bg-sidebar: #0f1222;
+  --bg-footer: #0f1222;
+
+  /* 文本颜色 */
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted: #a0aec0;
+
+  /* 边框阴影 */
+  --border-color: #2d3748;
+  --card-shadow: rgba(0, 0, 0, 0.3);
+
+  /* 链接颜色 */
+  --link-color: #dddddd;
+  --link-hover: #ffffff;
+
+  /* 按钮 */
+  --btn-bg: #2d3748;
+  --btn-text: #eeeeee;
+  --btn-border: #4a5568;
+  --btn-hover-bg: #4a5568;
+  --btn-hover-text: #ffffff;
+}
+
+/* ------------------------------
+   3. 全局元素基础样式（应用变量）
+   ------------------------------ */
+body {
+  background: var(--bg-body);
+  color: var(--text-primary);
+  transition: background 0.2s, color 0.2s;
+}
+
+/* 头部、底部、卡片、表单等主要容器 */
+header,
+footer,
+.card,
+.single-post,
+.login-form,
+.comment-form,
+.modal-content,
+.post-wrapper,
+.main-post,
+.info-area,
+.tag-area,
+.commnets-area,
+.comment,
+.post-area,
+.recomended-area,
+.sidebar-area,
+.blog-area {
+  background: var(--bg-card) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* 博客区域主背景（与卡片背景区分） */
+.blog-area,
+.recomended-area {
+  background: var(--bg-body) !important;
+}
+
+/* 卡片内的底部按钮区域 */
+.single-post .post-footer>li {
+  background: var(--bg-card);
+  border-right-color: var(--border-color);
+}
+
+.single-post .post-footer {
+  border-top: 1px solid var(--border-color);
+}
+
+/* 输入框、文本域 */
+input,
+textarea,
+.form-control,
+.src-input,
+.email-input,
+.text-area-messge {
+  background-color: var(--bg-header) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* 搜索区域背景 */
+.src-area {
+  background: var(--bg-card) !important;
+}
+
+.src-btn {
+  color: var(--text-primary) !important;
+}
+
+/* 按钮统一样式（包括加载更多、提交、返回顶部等） */
+.load-more-btn,
+.submit-btn,
+.go-top-btn,
+.login-form .submit-btn,
+.comment-form .submit-btn {
+  background: var(--btn-bg) !important;
+  color: var(--btn-text) !important;
+  border: 1px solid var(--btn-border) !important;
+  transition: all 0.3s;
+}
+
+.load-more-btn:hover,
+.submit-btn:hover,
+.go-top-btn:hover,
+.login-form .submit-btn:hover,
+.comment-form .submit-btn:hover {
+  background: var(--btn-hover-bg) !important;
+  color: var(--btn-hover-text) !important;
+  transform: translateY(-2px);
+}
+
+/* 链接悬浮颜色 */
+a:not(.btn):hover {
+  color: var(--link-hover) !important;
+}
+
+/* 导航栏菜单项悬浮效果（下划线） */
+header .main-menu>li>a {
+  border-bottom: 2px solid transparent;
+}
+
+header .main-menu>li>a:hover {
+  background: transparent !important;
+  color: var(--link-color) !important;
+  border-bottom: 2px solid var(--link-color);
+}
+
+/* 深色模式下导航栏悬浮颜色已在变量中定义，这里无需重复 */
+
+/* 文章卡片内作者区域、元信息等文字颜色（确保使用变量） */
+.avatar-area .name,
+.avatar-area .date,
+.post-meta span,
+.article-meta span,
+.post-info .name,
+.post-info .date {
+  color: var(--text-secondary);
+}
+
+/* 标签云链接样式 */
+.tag-area ul li a,
+.main-post .tags li a {
+  background: transparent !important;
+  color: var(--text-secondary) !important;
+  border: 1px solid var(--border-color);
+  border-radius: 30px;
+  padding: 4px 12px;
+  transition: all 0.2s;
+}
+
+.tag-area ul li a:hover,
+.main-post .tags li a:hover {
+  background: var(--link-color) !important;
+  color: #fff !important;
+  border-color: var(--link-color);
+}
+
+body.dark-mode .tag-area ul li a,
+body.dark-mode .main-post .tags li a {
+  background: transparent !important;
+  border-color: #4a5568;
+}
+
+/* 页脚图标按钮背景（使用链接色） */
+footer .icons>li>a {
+  background: var(--link-color);
+  color: #fff;
+}
+
+footer .icons>li>a:hover {
+  background: var(--link-hover);
+}
+
+/* 反馈区域输入框容器 */
+.input-area {
+  background: var(--bg-card) !important;
+  box-shadow: none;
+}
+
+/* 代码块深色模式背景（highlight.js） */
+body.dark-mode pre,
+body.dark-mode code,
+body.dark-mode .hljs {
+  background: #1e293b !important;
+  color: #e2e8f0 !important;
+}
+
+body.dark-mode .hljs-comment,
+body.dark-mode .hljs-quote {
+  color: #94a3b8 !important;
+}
+
+/* 主题切换按钮样式 */
+.theme-switch-wrapper {
+  display: inline-block;
+  float: right;
+  margin: 0 15px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+}
+
+.theme-toggle-btn {
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  color: var(--text-primary);
+  padding: 0 8px;
+  transition: 0.2s;
+}
+
+.theme-toggle-btn:hover {
+  color: var(--link-color);
+}
+
+/* 移动端适应 */
+@media (max-width: 767px) {
+  .theme-switch-wrapper {
+    position: absolute;
+    right: 60px;
+    top: 0;
+  }
+}
+
+.theme-toggle-btn {
+  background: transparent !important;
+  border: none !important;
+  color: var(--text-primary);
+}
+
+/* 确保所有文本继承主题颜色（覆盖可能遗漏的） */
+body,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+li,
+span,
+a,
+.para,
+.copyright,
+.title,
+.post-meta,
+.short-intro,
+.comment,
+.reply-btn a,
+.post-info .name,
+.post-info .date,
+.blog-info p,
+.single-post .blog-info p,
+.article-meta span,
+.article-categories a {
+  color: var(--text-primary);
+}
+
+.text-muted,
+.post-meta span,
+.date,
+.post-footer i,
+.comment .reply-btn a,
+.article-meta span,
+.article-categories a {
+  color: var(--text-secondary);
+}
+
+.single-post .blog-info .short-intro,
+.card .blog-info .short-intro {
+  color: var(--text-secondary);
+}
+
+/* 登录页面额外修复（保证深色模式正常） */
+section.center-text,
+.login-form,
+.login-form .form-control {
+  background-color: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+.login-form .alert {
+  background-color: var(--bg-header) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* 其他可能遗漏的白色背景容器 */
+.comment-form .form-control,
+.comment-form textarea.form-control {
+  background-color: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+.comment-form .form-control:focus {
+  border-color: var(--link-color) !important;
+  box-shadow: none;
+}
+
+.go-top-btn {
+  color: var(--btn-text) !important;
+  padding: 15px 20px;
+  margin: 10px 0 20px;
+  position: fixed;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  transition: all .3s;
+  box-shadow: 0px 0px 2px var(--card-shadow);
+  background: var(--btn-bg);
+}
+
+.go-top-btn:hover {
+  background: var(--btn-hover-bg);
+  color: var(--btn-hover-text) !important;
+  transform: translateY(-2px);
+  box-shadow: 5px 10px 20px var(--card-shadow);
+}
+
+body a,
+.content a,
+.post-area a,
+.blog-area a {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+body a:hover,
+.content a:hover,
+.post-area a:hover,
+.blog-area a:hover {
+  color: var(--link-hover);
+  text-decoration: none;
+}
+
+/* ===== 夜间模式输入框背景微调 & placeholder 颜色 ===== */
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode .form-control,
+body.dark-mode .src-input,
+body.dark-mode .email-input,
+body.dark-mode .text-area-messge {
+  /* 更亮的深色背景，便于阅读 */
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder,
+body.dark-mode .form-control::placeholder {
+  color: #858b92;
+  /* 明显可见的浅灰色 */
+  opacity: 1;
+}
+
+body.dark-mode input::-webkit-input-placeholder,
+body.dark-mode textarea::-webkit-input-placeholder {
+  color: #cbd5e1;
+}
+
+body.dark-mode input:-ms-input-placeholder,
+body.dark-mode textarea:-ms-input-placeholder {
+  color: #cbd5e1;
+}
+
+footer .submit-btn {
+  background: none !important;
+  border: none !important;
+  color: var(--text-primary) !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  font-size: 1.2rem !important;
+  opacity: 0.8;
+}
+
+footer .submit-btn:hover {
+  background: none !important;
+  color: var(--link-color) !important;
+  transform: none !important;
+  opacity: 1;
+}
+
+/* 夜间模式移动端导航按钮颜色 */
+body.dark-mode .menu-nav-icon {
+  color: var(--text-primary) !important;
+  /* 浅色文本 */
+}
+
+body.dark-mode .menu-nav-icon:hover {
+  color: var(--link-color) !important;
+}
+
+/* 移动端菜单显示控制（原 CSS 可能缺失，手动补上） */
+@media (max-width: 767px) {
+  header .main-menu.visible {
+    display: block !important;
+  }
+}
+
+/* 深色模式下移动端菜单背景及文字颜色 */
+@media (max-width: 767px) {
+  body.dark-mode header .main-menu {
+    background: var(--bg-header);
+    border-top-color: var(--border-color);
+  }
+
+  body.dark-mode header .main-menu>li {
+    border-bottom-color: var(--border-color);
+  }
+
+  body.dark-mode header .main-menu>li>a {
+    color: var(--text-primary);
+  }
+
+  body.dark-mode header .main-menu>li>a:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--link-color);
+  }
+}
+
+/* ===== 后台深色模式适配（限定在 .admin-layout 内） ===== */
+body.dark-mode .admin-layout {
+  /* 侧边栏背景 */
+  --el-bg-color: var(--bg-header) !important;
+  --el-bg-color-overlay: var(--bg-card) !important;
+  --el-text-color-primary: var(--text-primary) !important;
+  --el-text-color-regular: var(--text-secondary) !important;
+  --el-border-color-light: var(--border-color) !important;
+  --el-fill-color-light: var(--bg-card) !important;
+}
+
+/* 侧边栏整体背景 */
+body.dark-mode .admin-sidebar {
+  background-color: var(--bg-header) !important;
+  border-right-color: var(--border-color) !important;
+}
+
+/* 侧边栏菜单项文字颜色 */
+body.dark-mode .el-menu {
+  background-color: transparent !important;
+}
+
+body.dark-mode .el-menu-item,
+body.dark-mode .el-sub-menu__title {
+  color: var(--text-primary) !important;
+}
+
+body.dark-mode .el-menu-item:hover,
+body.dark-mode .el-sub-menu__title:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: var(--link-color) !important;
+}
+
+body.dark-mode .el-menu-item.is-active {
+  color: #498BF9 !important;
+  /* 或 var(--link-color) */
+  background-color: rgba(73, 139, 249, 0.2) !important;
+}
+
+/* 头部背景和文字 */
+body.dark-mode .admin-header {
+  background-color: var(--bg-header) !important;
+  border-bottom-color: var(--border-color) !important;
+}
+
+body.dark-mode .admin-header .header-actions .el-button {
+  color: var(--text-primary) !important;
+}
+
+body.dark-mode .admin-header .header-actions .el-button:hover {
+  color: var(--link-color) !important;
+}
+
+/* 主内容区背景 */
+body.dark-mode .admin-main {
+  background-color: var(--bg-body) !important;
+}
+
+/* Element Plus 卡片 */
+body.dark-mode .el-card {
+  background-color: var(--bg-card) !important;
+  border-color: var(--border-color) !important;
+}
+
+body.dark-mode .el-card__header {
+  border-bottom-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+/* 表格 */
+body.dark-mode .el-table {
+  background-color: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+}
+
+body.dark-mode .el-table th,
+body.dark-mode .el-table tr {
+  background-color: var(--bg-card) !important;
+}
+
+body.dark-mode .el-table td,
+body.dark-mode .el-table th {
+  border-bottom-color: var(--border-color) !important;
+}
+
+body.dark-mode .el-table__header-wrapper {
+  background-color: var(--bg-card) !important;
+}
+
+/* 分页 */
+body.dark-mode .el-pagination .btn-prev,
+body.dark-mode .el-pagination .btn-next,
+body.dark-mode .el-pager li {
+  background-color: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+}
+
+body.dark-mode .el-pager li.active {
+  color: #498BF9 !important;
+}
+
+body.dark-mode .el-pager li:hover {
+  background-color: var(--bg-header) !important;
+}
+
+/* 输入框、下拉框等 */
+body.dark-mode .el-input__wrapper,
+body.dark-mode .el-select__wrapper,
+body.dark-mode .el-textarea__inner {
+  background-color: var(--bg-header) !important;
+  box-shadow: none !important;
+  border-color: var(--border-color) !important;
+}
+
+body.dark-mode .el-input__inner,
+body.dark-mode .el-textarea__inner {
+  color: var(--text-primary) !important;
+}
+
+body.dark-mode .el-input__wrapper:hover,
+body.dark-mode .el-select__wrapper:hover {
+  box-shadow: 0 0 0 1px var(--border-color) inset !important;
+}
+
+body.dark-mode .el-input__wrapper.is-focus,
+body.dark-mode .el-select__wrapper.is-focus {
+  box-shadow: 0 0 0 1px #498BF9 inset !important;
+}
+
+/* 按钮（默认、主要等） */
+body.dark-mode .el-button {
+  background-color: var(--btn-bg);
+  border-color: var(--btn-border);
+  color: var(--btn-text);
+}
+
+body.dark-mode .el-button--primary {
+  background-color: #498BF9;
+  border-color: #498BF9;
+  color: #fff;
+}
+
+body.dark-mode .el-button--default:hover {
+  background-color: var(--btn-hover-bg);
+  color: var(--btn-hover-text);
+}
+
+/* 下拉菜单（Dropdown） */
+body.dark-mode .el-popper.is-light {
+  background-color: var(--bg-card) !important;
+  border-color: var(--border-color) !important;
+}
+
+body.dark-mode .el-dropdown-menu__item {
+  color: var(--text-primary) !important;
+}
+
+body.dark-mode .el-dropdown-menu__item:hover {
+  background-color: var(--bg-header) !important;
+  color: var(--link-color) !important;
+}
+
+body.dark-mode .el-dropdown-menu {
+  background-color: var(--bg-card) !important;
+}
