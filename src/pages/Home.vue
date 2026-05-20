@@ -7,7 +7,7 @@
             <div class="single-post post-style-2 post-style-3">
               <div class="blog-info">
                 <h4 class="title">
-                  <router-link :to="`/article/${article.slug}`"><b>{{ article.title }}</b></router-link>
+                  <router-link :to="`/article?v=${article.slug}`"><b>{{ article.title }}</b></router-link>
                 </h4>
                 <p>{{ article.introduction }}</p>
                 <div class="avatar-area">
@@ -16,13 +16,13 @@
                   </router-link>
                   <div class="right-area">
                     <router-link class="name" to="/about"><b>{{ article.author }}</b></router-link>
-                    <h6 class="date">{{ formatDate(article.releaseDate) }}</h6>
+                    <h6 class="date">{{ formatDate(article.releasedAt) }}</h6>
                   </div>
                 </div>
                 <ul class="post-footer">
                   <li><a href="javascript:void(0)" @click="handleLike(article.slug)"><i class="ion-heart"></i>{{ article.likes }}</a></li>
-                  <li><router-link :to="`/article/${article.slug}`"><i class="ion-chatbubble"></i>{{ article.reviews }}</router-link></li>
-                  <li><router-link :to="`/article/${article.slug}`"><i class="ion-eye"></i>{{ article.views }}</router-link></li>
+                  <li><router-link :to="`/article?v=${article.slug}`"><i class="ion-chatbubble"></i>{{ article.reviews }}</router-link></li>
+                  <li><router-link :to="`/article?v=${article.slug}`"><i class="ion-eye"></i>{{ article.views }}</router-link></li>
                 </ul>
               </div>
             </div>
@@ -37,7 +37,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { getArticles, likeArticle } from '../api/index'
-import dayjs from 'dayjs'
+import { formatDate } from '../utils/date'
 
 const articles = ref<any[]>([])
 const page = ref(0)
@@ -46,11 +46,11 @@ const size = 6
 
 const fetchArticles = async (reset = false) => {
   try {
-    const data = await getArticles(page.value, size)
-    const newArticles = data.content
+    const res = await getArticles(page.value, size)
+    const newArticles = res.data.content
     if (reset) articles.value = newArticles
     else articles.value.push(...newArticles)
-    hasMore.value = !data.last
+    hasMore.value = !res.data.last
   } catch (err) {
     console.error(err)
   }
@@ -64,14 +64,12 @@ const loadMore = () => {
 const handleLike = async (slug: string) => {
   try {
     await likeArticle(slug)
-    // 局部更新点赞数（简单起见，重新加载首页）
+    // 局部更新点赞数
     await fetchArticles(true)
   } catch (err) {
     console.error(err)
   }
 }
-
-const formatDate = (date: string) => dayjs(date).format('YYYY-MM-DD HH:mm:ss')
 
 onMounted(() => {
   fetchArticles(true)

@@ -367,6 +367,7 @@ header .src-area .src-btn {
 }
 
 .post-area .post-info .date {
+	margin-left: 5px;
 	display: inline-block;
 	color: var(--text-secondary);
 }
@@ -630,7 +631,8 @@ header .src-area .src-btn {
 	border-color: var(--link-color);
 }
 
-.comment-form .submit-btn {
+.comment-form .submit-btn,
+.comment-form .cancel-btn {
 	font-size: .8em;
 	border: 0;
 	outline: 0;
@@ -641,7 +643,8 @@ header .src-area .src-btn {
 	color: var(--btn-text);
 }
 
-.comment-form .submit-btn:hover {
+.comment-form .submit-btn:hover,
+.comment-form .cancel-btn:hover {
 	background: var(--btn-hover-bg);
 	color: var(--btn-hover-text);
 }
@@ -670,12 +673,15 @@ header .src-area .src-btn {
 }
 
 .comment .reply-for {
+	text-align: left;
 	margin-bottom: 20px;
+	padding-left: 15px;
 }
 
 .comment .post-info {
 	position: relative;
 	padding: 30px 0;
+	border-bottom: 1px solid var(--border-color);
 }
 
 .comment .post-info .left-area {
@@ -691,18 +697,24 @@ header .src-area .src-btn {
 }
 
 .comment .post-info .middle-area {
-	padding-left: 90px;
 	width: calc(100% - 70px);
 	display: inline-block;
 }
 
 .comment .post-info .date {
 	display: inline-block;
+	margin-left: 5px;
 	color: var(--text-secondary);
 }
 
 .comment .post-info .right-area {
 	float: right;
+}
+
+.comment .reply-content-wrapper {
+	clear: both;
+	padding-top: 15px;
+	padding-left: 90px;
 }
 
 

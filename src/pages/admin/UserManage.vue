@@ -5,8 +5,11 @@
     </div>
     <el-table :data="list" style="margin-top: 20px">
       <el-table-column prop="id" label="ID" />
-      <el-table-column prop="kind" label="名称" />
-      <el-table-column prop="bgImage" label="背景图" />
+      <el-table-column prop="username" label="用户名" />
+      <el-table-column prop="email" label="邮箱" />
+      <el-table-column prop="avatar" label="头像" />
+      <el-table-column prop="role" label="角色" />
+      <el-table-column prop="createdAt" label="注册日期" />
       <el-table-column label="操作">
         <template #default="{ row }">
           <el-button link type="primary" @click="openDialog(row)">编辑</el-button>
@@ -16,11 +19,20 @@
     </el-table>
     <el-dialog v-model="dialogVisible" :title="dialogTitle" width="30%">
       <el-form :model="formData" label-width="80px">
-        <el-form-item label="名称">
-          <el-input v-model="formData.kind" />
+        <el-form-item label="用户名">
+          <el-input v-model="formData.username" />
         </el-form-item>
-        <el-form-item label="背景图">
-          <el-input v-model="formData.bgImage" />
+        <el-form-item label="邮箱">
+          <el-input v-model="formData.email" />
+        </el-form-item>
+        <el-form-item label="头像">
+          <el-input v-model="formData.avatar" />
+        </el-form-item>
+        <el-form-item label="密码">
+          <el-input v-model="formData.password" />
+        </el-form-item>
+        <el-form-item label="角色">
+          <el-input v-model="formData.role" />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -39,7 +51,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 const list = ref([])
 const dialogVisible = ref(false)
 const dialogTitle = ref('')
-const formData = ref({ id: null, kind: '', bgImage: '' })
+const formData = ref({ id: null, username: '', email: '', avatar: '', password: '', role: '' })
 
 const loadData = async () => {
   const res = await axios.get('/api/user')
@@ -52,16 +64,16 @@ const openDialog = (row?: any) => {
     formData.value = { ...row }
   } else {
     dialogTitle.value = '新增用户'
-    formData.value = { id: null, kind: '', bgImage: '' }
+    formData.value = { id: null, username: '', email: '', avatar: '', password: '', role: '' }
   }
   dialogVisible.value = true
 }
 
 const save = async () => {
   if (formData.value.id) {
-    await axios.put(`/api/user/${formData.value.id}`, { kindName: formData.value.kind, bgImage: formData.value.bgImage })
+    await axios.put(`/api/user`, { id: formData.value.id, username: formData.value.username, email: formData.value.email, avatar: formData.value.avatar, password: formData.value.password, role: formData.value.role })
   } else {
-    await axios.post('/api/user', { kindName: formData.value.kind, bgImage: formData.value.bgImage })
+    await axios.post('/api/user', { username: formData.value.username, email: formData.value.email, avatar: formData.value.avatar, password: formData.value.password, role: formData.value.role })
   }
   ElMessage.success('保存成功')
   dialogVisible.value = false

@@ -12,7 +12,7 @@
                 </div>
                 <div class="middle-area">
                   <router-link class="name" to="/about"><b>{{ article.author }}</b></router-link>
-                  <h6 class="date">{{ formatDate(article.releaseDate) }}</h6>
+                  <h6 class="date">{{ formatDate(article.releasedAt) }}</h6>
                 </div>
               </div>
               <div class="para" v-html="renderedContent"></div>
@@ -29,11 +29,10 @@
                   <li><a href="javascript:void(0)"><i class="ion-eye"></i>{{ article.views }}</a></li>
                 </ul>
                 <ul class="icons">
-                  <li v-if="article.updateDate">最近编辑时间 : </li>
-                  <li><p><i class="ion-social-edit"></i>{{ formatDate(article.updateDate) }}</p></li>
+                  <li v-if="article.updatedAt">最近编辑时间 : </li>
+                  <li v-if="article.updatedAt"><p><i class="ion-social-edit"></i>{{ formatDate(article.updatedAt) }}</p></li>
                 </ul>
               </div>
-              <!-- 评论列表和表单（略，可独立为 CommentSection 组件） -->
             </div>
           </div>
         </div>
@@ -42,7 +41,7 @@
             <div class="tag-area">
               <h4 class="title"><b>TAG CLOUD</b></h4>
               <ul>
-                <li v-for="tag in tags" :key="tag.id"><a @click.prevent="searchByTag(tag.tag)">{{ tag.tag }}</a></li>
+                <li v-for="tag in tags" :key="tag.id"><a @click.prevent="searchByTag(tag.name)">{{ tag.name }}</a></li>
               </ul>
             </div>
           </div>
@@ -50,34 +49,93 @@
       </div>
     </div>
   </div>
+
+  <CommentArea v-if="article && article.slug"
+    :article-slug="article?.slug" 
+    :initial-total="article?.reviews || 0"
+    @update:total-comments="handleTotalCommentsUpdate"
+  />
+
+  <section class="recomended-area section" v-if="relatedArticles.length">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 col-md-6" v-for="article in relatedArticles" :key="article.slug">
+          <div class="card h-100">
+            <div class="single-post post-style-1">
+              <div class="blog-image">
+                <img :src="article.cover ? `/images/${article.cover}` : '/images/default-cover.jpg'" alt="Blog Image" />
+              </div>
+              <a class="avatar" href="javascript:void(0)">
+                <img src="/images/icons8-team-355979.png" alt="Profile Image" />
+              </a>
+              <div class="blog-info">
+                <h4 class="title">
+                  <a @click.prevent="goToArticle(article.slug)"><b>{{ article.title }}</b></a>
+                </h4>
+                <p>{{ formatDate(article.createdAt) }}</p>
+                <p>{{ article.introduction }}</p>
+                <ul class="post-footer">
+                  <li><a @click.prevent="likeArticle(article.slug)"><i class="ion-heart"></i>{{ article.likes }}</a></li>
+                  <li><a @click.prevent="goToArticle(article.slug)"><i class="ion-chatbubble"></i>{{ article.reviews }}</a></li>
+                  <li><a @click.prevent="goToArticle(article.slug)"><i class="ion-eye"></i>{{ article.views }}</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, watch, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { getArticleBySlug, likeArticle, viewArticle, getTags } from '../api/index'
+import { getArticleBySlug, getRelatedArticles, likeArticle, viewArticle, getTags } from '../api/index'
 import { renderMarkdown } from '../utils/markdown'
 import { formatDate } from '../utils/date'
+import CommentArea from '../components/CommentArea.vue'
 
 const route = useRoute()
 const router = useRouter()
 const article = ref<any>(null)
 const renderedContent = ref('')
 const tags = ref<any[]>([])
+const relatedArticles = ref<any[]>([])
 
 const coverUrl = computed(() => article.value?.cover ? `/images/${article.value.cover}` : '/images/default-cover.jpg')
 
 const loadArticle = async () => {
-  const slug = route.params.slug
-  const data = await getArticleBySlug(slug)
-  article.value = data
-  renderedContent.value = await renderMarkdown(data.content)
-  // 增加浏览量（可选）
+  const slug = route.query.v?.toString() || ''
+  const res = await getArticleBySlug(slug)
+  article.value = res.data
+  renderedContent.value = await renderMarkdown(res.data.content)
+  // 增加浏览量
   await viewArticle(slug).catch(() => {})
+
   // 触发 MathJax
   if (window.MathJax) {
     setTimeout(() => window.MathJax?.typesetPromise(), 100)
   }
+
+  if (res.data.slug) {
+    loadRelatedArticles(res.data.slug)
+  }
+}
+
+const loadRelatedArticles = async (articleSlug: string) => {
+  try {
+    const res = await getRelatedArticles(articleSlug)
+    relatedArticles.value = [res.data]
+  } catch (error) {
+    console.error('加载推荐文章失败', error)
+    relatedArticles.value = []
+  }
+}
+
+const goToArticle = (slug: string) => {
+  router.push({ path: '/article', query: { v: slug } })
 }
 
 const handleLike = async () => {
@@ -91,15 +149,20 @@ const searchByTag = (tag: string) => {
 }
 
 const loadTags = async () => {
-  const data = await getTags()
-  console.log(data)
-  tags.value = data
+  const res = await getTags()
+  tags.value = res.data
+}
+
+const handleTotalCommentsUpdate = (newTotal: number) => {
+  if (article.value) {
+    article.value.reviews = newTotal
+  }
 }
 
 onMounted(() => {
   loadArticle()
   loadTags()
-  watch(() => route.params.id, loadArticle)
+  watch(() => route.params.slug, loadArticle)
 })
 </script>
 

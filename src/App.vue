@@ -29,13 +29,10 @@
         </div>
       </header>
 
-      <!-- 占位 slider (有些页面可能使用，但你可以做成 slot 或者条件显示) -->
       <div class="slider" v-if="showSlider"></div>
 
-      <!-- 路由渲染区域 -->
       <router-view />
 
-      <!-- 底部 (完全复用原 layout.html 的 footer) -->
       <footer>
         <div class="container">
           <div class="row">
@@ -55,10 +52,9 @@
             <div class="col-lg-4 col-md-6">
               <div class="footer-section">
                 <h4 class="title"><b>Categories</b></h4>
-                <!-- 分类数据需要从 store 或 API 获取 -->
                 <ul v-for="(categoryGroup, groupIndex) in categoryGroups" :key="`group-${groupIndex}`">
-                  <li v-for="cat in categoryGroup" :key="cat.kind">
-                    <router-link :to="`/category?cw=${cat.kind}`">{{ cat.kind }}</router-link>
+                  <li v-for="cat in categoryGroup" :key="cat.name">
+                    <router-link :to="`/category?v=${cat.name}`">{{ cat.name }}</router-link>
                   </li>
                 </ul>
                 <br>
@@ -87,7 +83,6 @@
     </template>
 
     <template v-else>
-      <!-- 后台路由：直接渲染路由匹配的组件（AdminLayout） -->
       <router-view />
     </template>
   </div>
@@ -96,11 +91,10 @@
 <script setup lang="ts">
 import { ref, onMounted, computed  } from 'vue'
 import { useRoute } from 'vue-router'
-import { request } from './api/request'
+import { submitFeedback, getCategories } from './api/index'
 
 const route = useRoute()
 const isAdminRoute = computed(() => route.path.startsWith('/admin') || route.path.startsWith('/manager'))
-// 根据路由名称判断是否显示 slider（例如首页、分类页等需要，文章详情不需要）
 const showSlider = computed(() => {
   const hideSliderRoutes = ['Laboratory', 'About'] // 不需要 slider 的路由 name
   return !hideSliderRoutes.includes(route.name as string)
@@ -112,6 +106,7 @@ const toggleMobileMenu = () => {
 const closeMobileMenu = () => {
   mobileMenuOpen.value = false
 }
+
 // 深色模式
 const isDark = ref(localStorage.getItem('frontTheme') === 'dark')
 const toggleTheme = () => {
@@ -120,6 +115,7 @@ const toggleTheme = () => {
   localStorage.setItem('frontTheme', newTheme)
   document.body.classList.toggle('dark-mode', isDark.value)
 }
+
 // 监听初始状态
 onMounted(() => {
   if (isDark.value) document.body.classList.add('dark-mode')
@@ -130,17 +126,18 @@ onMounted(() => {
 const currentYear = new Date().getFullYear()
 
 interface Category {
-  kind: string;
-  bgImage?: string;
+  name: string;
+  cover?: string;
 }
 const categoryGroups = ref<Category[][]>([])
 const loadCategories = async () => {
   try {
-    const res = await request.get('/category')
-    // 按照原有逻辑分成每组3个
+    const res = await getCategories()
     const groups = []
-    for (let i = 0; i < res.data.length; i += 3) {
-      groups.push(res.data.slice(i, i + 3))
+    if (res.data){
+      for (let i = 0; i < res.data.length; i += 3) {
+        groups.push(res.data.slice(i, i + 3))
+      }
     }
     categoryGroups.value = groups
   } catch (error) {
@@ -159,12 +156,9 @@ const bugFeedbackClick = async () => {
     alert('必须正确填写邮箱和内容~')
     return
   }
-  const token = document.querySelector('meta[name="_csrf"]')?.getAttribute('content')
-  const header = document.querySelector('meta[name="_csrf_header"]')?.getAttribute('content')
+  
   try {
-    await request.post('/feedback', { senderEmail, content }, {
-      headers: { [header!]: token }
-    })
+    await submitFeedback(senderEmail, content)
     alert('发送成功')
     emailInput.value = ''
     contentTextarea.value = ''
@@ -175,7 +169,8 @@ const bugFeedbackClick = async () => {
 </script>
 
 <style>
+@import 'bootstrap/dist/css/bootstrap.min.css';
 @import '/blog/styles/layout/styles.css';
 @import '/blog/styles/layout/responsive.css';
-@import '/blog/styles/theme.css'
+@import '/blog/styles/theme.css';
 </style>

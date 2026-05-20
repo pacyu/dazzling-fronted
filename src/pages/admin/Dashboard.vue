@@ -54,7 +54,7 @@
           <el-table :data="recentArticles" style="width: 100%">
             <el-table-column prop="title" label="标题" />
             <el-table-column prop="author" label="作者" width="120" />
-            <el-table-column prop="releaseDate" label="发布日期" width="180" />
+            <el-table-column prop="releasedAt" label="发布日期" width="180" />
           </el-table>
         </el-card>
       </el-col>
@@ -63,7 +63,7 @@
           <template #header><span>最新评论</span></template>
           <el-table :data="recentComments" style="width: 100%">
             <el-table-column prop="content" label="内容" show-overflow-tooltip />
-            <el-table-column prop="postDate" label="发布时间" width="180" />
+            <el-table-column prop="createdAt" label="发布时间" width="180" />
           </el-table>
         </el-card>
       </el-col>
@@ -84,7 +84,7 @@ const fetchStats = async () => {
     axios.get('/api/article?page=0&size=1'),
     axios.get('/api/category'),
     axios.get('/api/tag'),
-    axios.get('/api/comment?page=0&size=1')
+    axios.get('/api/comment')
   ])
   stats.value.articles = articles.data.totalElements
   stats.value.categories = categories.data.length
@@ -93,9 +93,9 @@ const fetchStats = async () => {
 }
 
 const fetchRecent = async () => {
-  const articlesRes = await axios.get('/api/article?page=0&size=5&sort=releaseDate,desc')
+  const articlesRes = await axios.get('/api/article?page=0&size=5&sort=releasedAt,desc')
   recentArticles.value = articlesRes.data.content
-  const commentsRes = await axios.get('/api/comment?page=0&size=5&sort=postDate,desc')
+  const commentsRes = await axios.get('/api/comment?page=0&size=5&sort=createdAt,desc')
   recentComments.value = commentsRes.data.content
 }
 

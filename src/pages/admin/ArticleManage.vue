@@ -10,14 +10,14 @@
         <el-table-column prop="id" label="ID" width="80" />
         <el-table-column prop="title" label="标题" />
         <el-table-column prop="author" label="作者" width="120" />
-        <el-table-column prop="releaseDate" label="发布日期" width="160">
-          <template #default="{ row }">{{ dayjs(row.releaseDate).format('YYYY-MM-DD') }}</template>
+        <el-table-column prop="releasedAt" label="发布日期" width="160">
+          <template #default="{ row }">{{ dayjs(row.releasedAt).format('YYYY-MM-DD') }}</template>
         </el-table-column>
         <el-table-column prop="views" label="阅读量" width="100" />
         <el-table-column prop="likes" label="点赞" width="80" />
         <el-table-column label="操作" width="180">
           <template #default="{ row }">
-            <el-button link type="primary" @click="$router.push(`/admin/articles/edit/${row.id}`)">编辑</el-button>
+            <el-button link type="primary" @click="$router.push(`/admin/article/edit?slug=${row.slug}`)">编辑</el-button>
             <el-button link type="danger" @click="handleDelete(row.id)">删除</el-button>
           </template>
         </el-table-column>

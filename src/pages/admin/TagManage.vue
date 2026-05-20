@@ -5,8 +5,7 @@
     </div>
     <el-table :data="list" style="margin-top: 20px">
       <el-table-column prop="id" label="ID" />
-      <el-table-column prop="kind" label="名称" />
-      <el-table-column prop="bgImage" label="背景图" />
+      <el-table-column prop="name" label="标签名称" />
       <el-table-column label="操作">
         <template #default="{ row }">
           <el-button link type="primary" @click="openDialog(row)">编辑</el-button>
@@ -17,10 +16,7 @@
     <el-dialog v-model="dialogVisible" :title="dialogTitle" width="30%">
       <el-form :model="formData" label-width="80px">
         <el-form-item label="名称">
-          <el-input v-model="formData.kind" />
-        </el-form-item>
-        <el-form-item label="背景图">
-          <el-input v-model="formData.bgImage" />
+          <el-input v-model="formData.name" />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -39,7 +35,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 const list = ref([])
 const dialogVisible = ref(false)
 const dialogTitle = ref('')
-const formData = ref({ id: null, kind: '', bgImage: '' })
+const formData = ref({ id: null, name: '' })
 
 const loadData = async () => {
   const res = await axios.get('/api/tag')
@@ -48,20 +44,20 @@ const loadData = async () => {
 
 const openDialog = (row?: any) => {
   if (row) {
-    dialogTitle.value = '编辑用户'
+    dialogTitle.value = '编辑标签'
     formData.value = { ...row }
   } else {
-    dialogTitle.value = '新增用户'
-    formData.value = { id: null, kind: '', bgImage: '' }
+    dialogTitle.value = '新增标签'
+    formData.value = { id: null, name: '' }
   }
   dialogVisible.value = true
 }
 
 const save = async () => {
   if (formData.value.id) {
-    await axios.put(`/api/tag/${formData.value.id}`, { kindName: formData.value.kind, bgImage: formData.value.bgImage })
+    await axios.put(`/api/tag`, { id: formData.value.id, name: formData.value.name })
   } else {
-    await axios.post('/api/tag', { kindName: formData.value.kind, bgImage: formData.value.bgImage })
+    await axios.post('/api/tag', { name: formData.value.name })
   }
   ElMessage.success('保存成功')
   dialogVisible.value = false
@@ -70,7 +66,7 @@ const save = async () => {
 
 const handleDelete = async (id: number) => {
   await ElMessageBox.confirm('确定删除？', '提示', { type: 'warning' })
-  await axios.delete(`/api/tag/${id}`)
+  await axios.delete(`/api/tag`, { params: { id: id } })
   ElMessage.success('删除成功')
   loadData()
 }

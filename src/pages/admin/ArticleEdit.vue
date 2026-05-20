@@ -52,6 +52,7 @@ let vditor: Vditor
 
 const form = ref({
   id: null as number | null,
+  slug: '',
   title: '',
   introduction: '',
   cover: '',
@@ -73,18 +74,19 @@ const fetchOptions = async () => {
   allTags.value = tags.data.map((t: any) => t.tag)
 }
 
-const fetchArticle = async (id: number) => {
-  const res = await axios.get(`/api/article/${id}`)
+const fetchArticle = async (slug: string) => {
+  const res = await axios.get(`/api/article`, { params: {v: slug } })
   const data = res.data
   form.value = {
     id: data.id,
+    slug: data.slug,
     title: data.title,
     introduction: data.introduction,
     cover: data.cover,
     categories: data.category || [],
     tags: data.tag || [],
     content: data.content, // 原始 Markdown
-    release: data.releaseDate !== null
+    release: data.releasedAt !== null
   }
   if (vditor) vditor.setValue(data.content)
 }
@@ -103,6 +105,7 @@ const initEditor = () => {
 const submit = async () => {
   const content = vditor.getValue()
   const data = {
+    slug: form.value.slug,
     type: 'update',
     title: form.value.title,
     introduction: form.value.introduction,
@@ -113,7 +116,7 @@ const submit = async () => {
     release: form.value.release
   }
   if (form.value.id) {
-    await axios.put(`/api/article/${form.value.id}`, data)
+    await axios.put(`/api/article`, data)
     ElMessage.success('更新成功')
   } else {
     await axios.post('/api/article', data)
@@ -124,8 +127,8 @@ const submit = async () => {
 
 onMounted(async () => {
   await fetchOptions()
-  const id = route.params.id
-  if (id) await fetchArticle(Number(id))
+  const slug = route.query.slug as string || ''
+  if (slug !== '') await fetchArticle(slug)
   initEditor()
 })
 

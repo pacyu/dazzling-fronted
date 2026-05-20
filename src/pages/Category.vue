@@ -4,12 +4,12 @@
       <div class="swiper-container" ref="swiperContainer">
         <div class="swiper-wrapper">
           <div class="swiper-slide" v-for="cat in categories" :key="cat.slug">
-            <a class="slider-category" @click.prevent="selectCategory(cat.kind)">
+            <a class="slider-category" @click.prevent="selectCategory(cat.name)">
               <div class="blog-image"><img :src="`/images/${cat.bgImage}`" alt="Category Image"></div>
               <div class="category">
                 <div class="display-table center-text">
                   <div class="display-table-cell">
-                    <h3><b>{{ cat.kind }}</b></h3>
+                    <h3><b>{{ cat.name }}</b></h3>
                   </div>
                 </div>
               </div>
@@ -58,8 +58,8 @@ const size = 6
 let swiper: Swiper | null = null
 
 const loadCategories = async () => {
-  const data = await getCategories()
-  categories.value = data
+  const res = await getCategories()
+  categories.value = res.data
   await nextTick()
   if (swiper) swiper.destroy(true, true)
   swiper = new Swiper('.swiper-container', {
@@ -73,9 +73,9 @@ const loadCategories = async () => {
 
 const loadArticles = async () => {
   const cw = currentCategory.value
-  const data = await getArticlesByCategory(cw, page.value, size)
-  articles.value = data.content
-  totalPages.value = data.totalPages
+  const res = await getArticlesByCategory(cw, page.value, size)
+  articles.value = res.data.content
+  totalPages.value = res.data.totalPages
 }
 
 const selectCategory = (kind: string) => {

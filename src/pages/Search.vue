@@ -32,9 +32,9 @@ const size = 10
 
 const loadSearch = async (keyword: string) => {
   if (!keyword) return
-  const data = await searchArticles(keyword, page.value, size)
-  articles.value = data.content
-  totalPages.value = data.totalPages
+  const res = await searchArticles(keyword, page.value, size)
+  articles.value = res.data.content
+  totalPages.value = res.data.totalPages
   resultType.value = articles.value.length ? 'archive' : 'notfound'
 }
 

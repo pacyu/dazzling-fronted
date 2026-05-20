@@ -12,10 +12,10 @@
             <div class="single-post post-style-2 post-style-3">
               <div class="blog-info">
                 <h4 class="title">
-                  <router-link :to="`/article/${article.slug}`"><b>{{ article.title }}</b></router-link>
+                  <router-link :to="`/article?v=${article.slug}`"><b>{{ article.title }}</b></router-link>
                 </h4>
                 <div class="article-meta">
-                  <span><i class="ion-calendar"></i> {{ formatDate(article.releaseDate, 'YYYY-MM-DD') }}</span>
+                  <span><i class="ion-calendar"></i> {{ formatDate(article.releasedAt, 'YYYY-MM-DD') }}</span>
                   <span><i class="ion-eye"></i> {{ article.views }} 阅读</span>
                   <span><i class="ion-chatbubble"></i> {{ article.reviews }} 评论</span>
                 </div>
@@ -30,13 +30,13 @@
                   </router-link>
                   <div class="right-area">
                     <router-link class="name" to="/about"><b>{{ article.author }}</b></router-link>
-                    <h6 class="date">{{ formatDate(article.releaseDate) }}</h6>
+                    <h6 class="date">{{ formatDate(article.releasedAt) }}</h6>
                   </div>
                 </div>
                 <ul class="post-footer">
                   <li><a href="javascript:void(0)" @click="handleLike(article.slug)"><i class="ion-heart"></i>{{ article.likes }}</a></li>
-                  <li><router-link :to="`/article/${article.slug}`"><i class="ion-chatbubble"></i>{{ article.reviews }}</router-link></li>
-                  <li><router-link :to="`/article/${article.slug}`"><i class="ion-eye"></i>{{ article.views }}</router-link></li>
+                  <li><router-link :to="`/article?v=${article.slug}`"><i class="ion-chatbubble"></i>{{ article.reviews }}</router-link></li>
+                  <li><router-link :to="`/article?v=${article.slug}`"><i class="ion-eye"></i>{{ article.views }}</router-link></li>
                 </ul>
               </div>
             </div>
@@ -67,9 +67,9 @@ const totalPages = ref(0)
 const size = 6
 
 const loadArticles = async () => {
-  const data = await getArticles(page.value, size)
-  articles.value = data.content
-  totalPages.value = data.totalPages
+  const res = await getArticles(page.value, size)
+  articles.value = res.data.content
+  totalPages.value = res.data.totalPages
 }
 
 const changePage = (newPage: number) => {
@@ -79,12 +79,12 @@ const changePage = (newPage: number) => {
 
 const handleLike = async (slug: string) => {
   await likeArticle(slug)
-  // 刷新当前页（或者局部更新）
+  // 刷新当前页
   loadArticles()
 }
 
 const goToCategory = (cat: string) => {
-  router.push({ path: '/category', query: { cw: cat } })
+  router.push({ path: '/category', query: { v: cat } })
 }
 
 onMounted(loadArticles)

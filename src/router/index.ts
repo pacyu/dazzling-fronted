@@ -22,7 +22,7 @@ import UserManage from '../pages/admin/UserManage.vue'
 const routes = [
   { path: '/', name: 'Home', component: Home },
   { path: '/articles', name: 'Articles', component: Articles },
-  { path: '/article/:slug', name: 'ArticleDetail', component: ArticleDetail },
+  { path: '/article', name: 'ArticleDetail', component: ArticleDetail },
   { path: '/category', name: 'Category', component: Category },
   { path: '/about', name: 'About', component: About },
   { path: '/search', name: 'Search', component: Search },
@@ -39,7 +39,7 @@ const routes = [
       { path: '', redirect: '/admin/dashboard' },
       { path: 'dashboard', component: Dashboard },
       { path: 'articles', component: ArticleManage },
-      { path: 'articles/edit/:slug?', component: ArticleEdit },
+      { path: 'article/edit', component: ArticleEdit },
       { path: 'categories', component: CategoryManage },
       { path: 'tags', component: TagManage },
       { path: 'comments', component: CommentManage },
@@ -53,12 +53,12 @@ const router = createRouter({
   routes
 })
 
-// 路由守卫：检查是否登录（通过调用 /api/user/current）
+// 路由：检查是否登录
 router.beforeEach(async (to, from) => {
-  console.log('路由守卫:', to.path, 'from:', from.path)
+  console.log(from)
   if (to.meta.requiresAuth) {
     try {
-      const res = await request.get('/user/current')
+      const res = await request.get('/user/session')
       if (res.status === 200) {
         return true
       } else {

@@ -39,14 +39,14 @@ const renderedContent = ref('')
 const tags = ref<any[]>([])
 
 const loadAbout = async () => {
-  const data = await getAboutArticle()
-  about.value = data
-  renderedContent.value = await renderMarkdown(data.content)
+  const res = await getAboutArticle()
+  about.value = res.data
+  renderedContent.value = await renderMarkdown(res.data.content)
 }
 
 const loadTags = async () => {
   const res = await getTags()
-  tags.value = res
+  tags.value = res.data
 }
 
 const searchByTag = (tag: string) => {
