@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import { request } from '../../api/request'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 const list = ref([])
@@ -38,7 +38,7 @@ const dialogTitle = ref('')
 const formData = ref({ id: null, slug: '', name: '' })
 
 const loadData = async () => {
-  const res = await axios.get('/api/tag')
+  const res = await request.get('/tag')
   list.value = res.data
 }
 
@@ -55,9 +55,9 @@ const openDialog = (row?: any) => {
 
 const save = async () => {
   if (formData.value.id) {
-    await axios.put(`/api/tag`, { v: formData.value.slug, name: formData.value.name })
+    await request.put(`/tag`, { v: formData.value.slug, name: formData.value.name })
   } else {
-    await axios.post('/api/tag', { name: formData.value.name })
+    await request.post('/tag', { name: formData.value.name })
   }
   ElMessage.success('保存成功')
   dialogVisible.value = false
@@ -66,7 +66,7 @@ const save = async () => {
 
 const handleDelete = async (id: number) => {
   await ElMessageBox.confirm('确定删除？', '提示', { type: 'warning' })
-  await axios.delete(`/api/tag`, { data: { v: id } })
+  await request.delete(`/tag`, { data: { v: id } })
   ElMessage.success('删除成功')
   loadData()
 }

@@ -33,7 +33,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import { request } from '../../api/request'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 const list = ref([])
@@ -42,7 +42,7 @@ const dialogTitle = ref('')
 const formData = ref({ id: null, slug: '', name: '', cover: '' })
 
 const loadData = async () => {
-  const res = await axios.get('/api/category')
+  const res = await request.get('/category')
   list.value = res.data
 }
 
@@ -59,9 +59,9 @@ const openDialog = (row?: any) => {
 
 const save = async () => {
   if (formData.value.id) {
-    await axios.put(`/api/category`, { v: formData.value.slug, name: formData.value.name, cover: formData.value.cover })
+    await request.put(`/category`, { v: formData.value.slug, name: formData.value.name, cover: formData.value.cover })
   } else {
-    await axios.post('/api/category', { name: formData.value.name, cover: formData.value.cover })
+    await request.post('/category', { name: formData.value.name, cover: formData.value.cover })
   }
   ElMessage.success('保存成功')
   dialogVisible.value = false
@@ -70,7 +70,7 @@ const save = async () => {
 
 const handleDelete = async (id: number) => {
   await ElMessageBox.confirm('确定删除？', '提示', { type: 'warning' })
-  await axios.delete(`/api/category`, { data: { id: id } })
+  await request.delete(`/category`, { data: { id: id } })
   ElMessage.success('删除成功')
   loadData()
 }

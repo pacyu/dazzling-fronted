@@ -45,7 +45,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import { request } from '../../api/request'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 const list = ref([])
@@ -54,7 +54,7 @@ const dialogTitle = ref('')
 const formData = ref({ id: null, username: '', email: '', avatar: '', password: '', role: '' })
 
 const loadData = async () => {
-  const res = await axios.get('/api/user')
+  const res = await request.get('/user')
   list.value = res.data
 }
 
@@ -71,9 +71,9 @@ const openDialog = (row?: any) => {
 
 const save = async () => {
   if (formData.value.id) {
-    await axios.put(`/api/user`, { id: formData.value.id, username: formData.value.username, email: formData.value.email, avatar: formData.value.avatar, password: formData.value.password, role: formData.value.role })
+    await request.put(`/user`, { id: formData.value.id, username: formData.value.username, email: formData.value.email, avatar: formData.value.avatar, password: formData.value.password, role: formData.value.role })
   } else {
-    await axios.post('/api/user', { username: formData.value.username, email: formData.value.email, avatar: formData.value.avatar, password: formData.value.password, role: formData.value.role })
+    await request.post('/user', { username: formData.value.username, email: formData.value.email, avatar: formData.value.avatar, password: formData.value.password, role: formData.value.role })
   }
   ElMessage.success('保存成功')
   dialogVisible.value = false
@@ -82,7 +82,7 @@ const save = async () => {
 
 const handleDelete = async (id: number) => {
   await ElMessageBox.confirm('确定删除？', '提示', { type: 'warning' })
-  await axios.delete(`/api/user/`, { data: {id: id} })
+  await request.delete(`/user/`, { data: {id: id} })
   ElMessage.success('删除成功')
   loadData()
 }

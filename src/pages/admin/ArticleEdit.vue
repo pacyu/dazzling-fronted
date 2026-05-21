@@ -41,7 +41,7 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import axios from 'axios'
+import { request } from '../../api/request'
 import Vditor from 'vditor'
 import 'vditor/dist/index.css'
 
@@ -67,15 +67,15 @@ const allTags = ref<string[]>([])
 
 const fetchOptions = async () => {
   const [cats, tags] = await Promise.all([
-    axios.get('/api/category'),
-    axios.get('/api/tag')
+    request.get('/category'),
+    request.get('/tag')
   ])
   allCategories.value = cats.data.map((c: any) => c.name)
   allTags.value = tags.data.map((t: any) => t.name)
 }
 
 const fetchArticle = async (slug: string) => {
-  const res = await axios.get(`/api/article`, { params: {v: slug } })
+  const res = await request.get(`/article`, { params: {v: slug } })
   const data = res.data
   form.value = {
     id: data.id,
@@ -117,14 +117,14 @@ const submit = async () => {
   }
   if (form.value.id) {
     data.type = 'update'
-    await axios.put(`/api/article`, data)
+    await request.put(`/article`, data)
     ElMessage.success('更新成功')
   } else if (form.value.release) {
-    await axios.post('/api/article', data)
+    await request.post('/article', data)
     ElMessage.success('创建成功')
   } else {
     data.type = 'draft'
-    await axios.post('/api/article', data)
+    await request.post('/article', data)
     ElMessage.success('保存成功')
   }
   router.push('/admin/articles')

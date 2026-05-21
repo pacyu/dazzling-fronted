@@ -73,7 +73,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import { request } from '../../api/request'
 
 const stats = ref({ articles: 0, comments: 0, categories: 0, tags: 0 })
 const recentArticles = ref([])
@@ -81,10 +81,10 @@ const recentComments = ref([])
 
 const fetchStats = async () => {
   const [articles, categories, tags, comments] = await Promise.all([
-    axios.get('/api/article?page=0&size=1'),
-    axios.get('/api/category'),
-    axios.get('/api/tag'),
-    axios.get('/api/comment')
+    request.get('/article?page=0&size=1'),
+    request.get('/category'),
+    request.get('/tag'),
+    request.get('/comment')
   ])
   stats.value.articles = articles.data.totalElements
   stats.value.categories = categories.data.length
@@ -93,9 +93,9 @@ const fetchStats = async () => {
 }
 
 const fetchRecent = async () => {
-  const articlesRes = await axios.get('/api/article?page=0&size=5&sort=releasedAt,desc')
+  const articlesRes = await request.get('/article?page=0&size=5&sort=releasedAt,desc')
   recentArticles.value = articlesRes.data.content
-  const commentsRes = await axios.get('/api/comment?page=0&size=5&sort=createdAt,desc')
+  const commentsRes = await request.get('/comment?page=0&size=5&sort=createdAt,desc')
   recentComments.value = commentsRes.data.content
 }
 

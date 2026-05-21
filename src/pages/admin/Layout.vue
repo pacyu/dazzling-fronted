@@ -81,7 +81,7 @@
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import axios from 'axios'
+import { request } from '../../api/request'
 import { ElMessage } from 'element-plus'
 import {
   HomeFilled,
@@ -117,7 +117,7 @@ const goHome = () => {
 const handleCommand = async (command: string) => {
   if (command === 'logout') {
     try {
-      await axios.post('/api/logout', {}, { withCredentials: true })
+      await request.post('/logout')
       ElMessage.success('已退出登录')
       router.push('/login')
     } catch {

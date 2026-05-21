@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import { request } from '../../api/request'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import dayjs from 'dayjs'
 
@@ -49,7 +49,7 @@ const keyword = ref('')
 const loadArticles = async () => {
   const params: any = { page: currentPage.value - 1, size: pageSize.value }
   if (keyword.value) params.title = keyword.value  // 后端需支持标题模糊搜索
-  const res = await axios.get('/api/article', { params })
+  const res = await request.get('/article', { params })
   articles.value = res.data.content
   total.value = res.data.totalElements
 }
@@ -61,7 +61,7 @@ const search = () => {
 
 const handleDelete = async (id: number) => {
   await ElMessageBox.confirm('确定删除该文章吗？', '提示', { type: 'warning' })
-  await axios.delete(`/api/article`, { data: { id: id, type: 'delete' } })
+  await request.delete(`/article`, { data: { id: id, type: 'delete' } })
   ElMessage.success('删除成功')
   loadArticles()
 }

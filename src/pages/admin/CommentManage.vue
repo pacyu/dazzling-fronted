@@ -43,7 +43,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import { request } from '../../api/request'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 const list = ref([])
@@ -52,7 +52,7 @@ const dialogTitle = ref('')
 const formData = ref({ id: null, articleId: null, userId: null, articleSlug: '', content: '' })
 
 const loadData = async () => {
-  const res = await axios.get('/api/comment?page=0&size=5&sort=createdAt,desc')
+  const res = await request.get('/comment?page=0&size=5&sort=createdAt,desc')
   list.value = res.data.content
 }
 
@@ -69,9 +69,9 @@ const openDialog = (row?: any) => {
 
 const save = async () => {
   if (formData.value.id) {
-    await axios.put(`/api/comment`, { id: formData.value.id, artilceId: formData.value.articleId, userId: formData.value.userId, articleSlug: formData.value.articleSlug, content: formData.value.content })
+    await request.put(`/comment`, { id: formData.value.id, artilceId: formData.value.articleId, userId: formData.value.userId, articleSlug: formData.value.articleSlug, content: formData.value.content })
   } else {
-    await axios.post('/api/comment', { artilceId: formData.value.articleId, userId: formData.value.userId, articleSlug: formData.value.articleSlug, content: formData.value.content })
+    await request.post('/comment', { artilceId: formData.value.articleId, userId: formData.value.userId, articleSlug: formData.value.articleSlug, content: formData.value.content })
   }
   ElMessage.success('保存成功')
   dialogVisible.value = false
@@ -80,7 +80,7 @@ const save = async () => {
 
 const handleDelete = async (id: number) => {
   await ElMessageBox.confirm('确定删除？', '提示', { type: 'warning' })
-  await axios.delete(`/api/comment`, { data: { id } })
+  await request.delete(`/comment`, { data: { id } })
   ElMessage.success('删除成功')
   loadData()
 }
