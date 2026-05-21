@@ -38,7 +38,7 @@ const submitLogin = async () => {
   try {
     await login(username.value, password.value)
     // 登录成功，跳转到之前访问的页面或后台
-    const redirect = (route.query.redirect as string) || '/manager'
+    const redirect = (route.query.redirect as string) || '/admin/dashboard'
     console.log("===>", redirect)
     await router.push(redirect)
   } catch (err) {

@@ -1,17 +1,5 @@
 import { request } from '../api/request'
 
-// 响应拦截器处理 401
-request.interceptors.response.use(
-  res => res,
-  err => {
-    if (err.response?.status === 401) {
-      // 未登录，跳转到登录页
-      window.location.href = '/login'
-    }
-    return Promise.reject(err)
-  }
-)
-
 export interface CommentItem {
   id: number
   content: string
