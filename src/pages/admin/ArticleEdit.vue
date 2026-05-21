@@ -70,8 +70,8 @@ const fetchOptions = async () => {
     axios.get('/api/category'),
     axios.get('/api/tag')
   ])
-  allCategories.value = cats.data.map((c: any) => c.kind)
-  allTags.value = tags.data.map((t: any) => t.tag)
+  allCategories.value = cats.data.map((c: any) => c.name)
+  allTags.value = tags.data.map((t: any) => t.name)
 }
 
 const fetchArticle = async (slug: string) => {
@@ -106,21 +106,26 @@ const submit = async () => {
   const content = vditor.getValue()
   const data = {
     slug: form.value.slug,
-    type: 'update',
+    type: '',
     title: form.value.title,
     introduction: form.value.introduction,
     content,
     cover: form.value.cover,
     categories: form.value.categories,
     tags: form.value.tags,
-    release: form.value.release
+    isRelease: form.value.release
   }
   if (form.value.id) {
+    data.type = 'update'
     await axios.put(`/api/article`, data)
     ElMessage.success('更新成功')
-  } else {
+  } else if (form.value.release) {
     await axios.post('/api/article', data)
     ElMessage.success('创建成功')
+  } else {
+    data.type = 'draft'
+    await axios.post('/api/article', data)
+    ElMessage.success('保存成功')
   }
   router.push('/admin/articles')
 }

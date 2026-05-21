@@ -55,7 +55,7 @@ const router = createRouter({
 
 // 路由：检查是否登录
 router.beforeEach(async (to, from) => {
-  console.log(from)
+  console.log(from.path)
   if (to.meta.requiresAuth) {
     try {
       const res = await request.get('/user/session')

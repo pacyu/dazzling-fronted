@@ -39,7 +39,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 const list = ref([])
 const dialogVisible = ref(false)
 const dialogTitle = ref('')
-const formData = ref({ id: null, name: '', cover: '' })
+const formData = ref({ id: null, slug: '', name: '', cover: '' })
 
 const loadData = async () => {
   const res = await axios.get('/api/category')
@@ -52,14 +52,14 @@ const openDialog = (row?: any) => {
     formData.value = { ...row }
   } else {
     dialogTitle.value = '新增分类'
-    formData.value = { id: null, name: '', cover: '' }
+    formData.value = { id: null, slug: '', name: '', cover: '' }
   }
   dialogVisible.value = true
 }
 
 const save = async () => {
   if (formData.value.id) {
-    await axios.put(`/api/category/${formData.value.id}`, { name: formData.value.name, cover: formData.value.cover })
+    await axios.put(`/api/category`, { v: formData.value.slug, name: formData.value.name, cover: formData.value.cover })
   } else {
     await axios.post('/api/category', { name: formData.value.name, cover: formData.value.cover })
   }
@@ -70,7 +70,7 @@ const save = async () => {
 
 const handleDelete = async (id: number) => {
   await ElMessageBox.confirm('确定删除？', '提示', { type: 'warning' })
-  await axios.delete(`/api/category`, { params: { id: id } })
+  await axios.delete(`/api/category`, { data: { id: id } })
   ElMessage.success('删除成功')
   loadData()
 }

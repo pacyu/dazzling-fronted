@@ -80,7 +80,7 @@ const save = async () => {
 
 const handleDelete = async (id: number) => {
   await ElMessageBox.confirm('确定删除？', '提示', { type: 'warning' })
-  await axios.delete(`/api/comment`, { params: { id } })
+  await axios.delete(`/api/comment`, { data: { id } })
   ElMessage.success('删除成功')
   loadData()
 }

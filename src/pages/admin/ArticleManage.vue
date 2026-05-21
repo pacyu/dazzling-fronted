@@ -4,7 +4,7 @@
       <div class="search-bar">
         <el-input v-model="keyword" placeholder="搜索标题" style="width: 200px" @keyup.enter="search" />
         <el-button type="primary" @click="search">搜索</el-button>
-        <el-button type="success" @click="$router.push('/admin/articles/edit')">写文章</el-button>
+        <el-button type="success" @click="$router.push('/admin/article/edit')">写文章</el-button>
       </div>
       <el-table :data="articles" border style="margin-top: 20px">
         <el-table-column prop="id" label="ID" width="80" />
@@ -61,7 +61,7 @@ const search = () => {
 
 const handleDelete = async (id: number) => {
   await ElMessageBox.confirm('确定删除该文章吗？', '提示', { type: 'warning' })
-  await axios.delete(`/api/article/${id}`, { data: { type: 'delete' } })
+  await axios.delete(`/api/article`, { data: { id: id, type: 'delete' } })
   ElMessage.success('删除成功')
   loadArticles()
 }

@@ -17,7 +17,7 @@
             <div class="tag-area">
               <h4 class="title"><b>TAG CLOUD</b></h4>
               <ul>
-                <li v-for="tag in tags" :key="tag.id"><a @click.prevent="searchByTag(tag.tag)">{{ tag.tag }}</a></li>
+                <li v-for="tag in tags" :key="tag.id"><a @click.prevent="searchByTag(tag.name)">{{ tag.name }}</a></li>
               </ul>
             </div>
           </div>

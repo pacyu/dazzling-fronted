@@ -1,10 +1,31 @@
 <template>
   <section class="blog-area section">
     <div class="container">
-      <div v-if="resultType === 'archive'">
+      <div v-if="resultType === 'article'">
         <div class="row">
           <div class="col-lg-4 col-md-6" v-for="article in articles" :key="article.slug">
-            <!-- 文章卡片，复用 -->
+            <div class="card h-100">
+              <div class="single-post post-style-1">
+                <div class="blog-image">
+                  <img :src="article.cover ? `/images/${article.cover}` : '/images/default-cover.jpg'" alt="Blog Image" />
+                </div>
+                <a class="avatar" href="javascript:void(0)">
+                  <img src="/images/icons8-team-355979.png" alt="Profile Image" />
+                </a>
+                <div class="blog-info">
+                  <h4 class="title">
+                    <a @click.prevent="goToArticle(article.slug)"><b>{{ article.title }}</b></a>
+                  </h4>
+                  <p>{{ formatDate(article.createdAt) }}</p>
+                  <p>{{ article.introduction }}</p>
+                  <ul class="post-footer">
+                    <li><a @click.prevent="likeArticle(article.slug)"><i class="ion-heart"></i>{{ article.likes }}</a></li>
+                    <li><a @click.prevent="goToArticle(article.slug)"><i class="ion-chatbubble"></i>{{ article.reviews }}</a></li>
+                    <li><a @click.prevent="goToArticle(article.slug)"><i class="ion-eye"></i>{{ article.views }}</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="text-center" v-if="totalPages > 1">
@@ -20,12 +41,14 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
-import { useRoute } from 'vue-router'
-import { searchArticles } from '../api/index'
+import { useRoute, useRouter } from 'vue-router'
+import { searchArticles, likeArticle } from '../api/index'
+import { formatDate } from '../utils/date'
 
 const route = useRoute()
+const router = useRouter()
 const articles = ref<any[]>([])
-const resultType = ref('archive')
+const resultType = ref('article')
 const page = ref(0)
 const totalPages = ref(0)
 const size = 10
@@ -35,13 +58,17 @@ const loadSearch = async (keyword: string) => {
   const res = await searchArticles(keyword, page.value, size)
   articles.value = res.data.content
   totalPages.value = res.data.totalPages
-  resultType.value = articles.value.length ? 'archive' : 'notfound'
+  resultType.value = articles.value.length ? 'article' : 'notfound'
 }
 
 const changePage = (newPage: number) => {
   page.value = newPage
   const q = route.query.q as string
   if (q) loadSearch(q)
+}
+
+const goToArticle = (slug: string) => {
+  router.push({ path: '/article', query: { v: slug } })
 }
 
 onMounted(() => {
@@ -53,3 +80,8 @@ onMounted(() => {
   })
 })
 </script>
+
+<style scoped>
+@import '/blog/styles/detail/styles.css';
+@import '/blog/styles/detail/responsive.css';
+</style>

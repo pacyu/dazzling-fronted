@@ -35,7 +35,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 const list = ref([])
 const dialogVisible = ref(false)
 const dialogTitle = ref('')
-const formData = ref({ id: null, name: '' })
+const formData = ref({ id: null, slug: '', name: '' })
 
 const loadData = async () => {
   const res = await axios.get('/api/tag')
@@ -48,14 +48,14 @@ const openDialog = (row?: any) => {
     formData.value = { ...row }
   } else {
     dialogTitle.value = '新增标签'
-    formData.value = { id: null, name: '' }
+    formData.value = { id: null, slug: '', name: '' }
   }
   dialogVisible.value = true
 }
 
 const save = async () => {
   if (formData.value.id) {
-    await axios.put(`/api/tag`, { id: formData.value.id, name: formData.value.name })
+    await axios.put(`/api/tag`, { v: formData.value.slug, name: formData.value.name })
   } else {
     await axios.post('/api/tag', { name: formData.value.name })
   }
@@ -66,7 +66,7 @@ const save = async () => {
 
 const handleDelete = async (id: number) => {
   await ElMessageBox.confirm('确定删除？', '提示', { type: 'warning' })
-  await axios.delete(`/api/tag`, { params: { id: id } })
+  await axios.delete(`/api/tag`, { data: { v: id } })
   ElMessage.success('删除成功')
   loadData()
 }
