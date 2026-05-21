@@ -9,7 +9,7 @@
           <div class="post-wrapper" v-if="about">
             <h3 class="title"><router-link :to="`/article/${about.slug}`"><b>{{ about.title }}</b></router-link></h3>
             <div class="para" v-html="renderedContent"></div>
-            <div class="post-image"><img :src="`/images/${about.cover}`" alt="About Image"></div>
+            <div class="post-image"><img :src="`/blog/images/covers/${about.cover}`" alt="About Image"></div>
           </div>
         </div>
         <div class="col-lg-4 col-md-12 no-left-padding">

@@ -8,7 +8,7 @@
               <h3 class="title"><b>{{ article.title }}</b></h3>
               <div class="post-info">
                 <div class="left-area">
-                  <a class="avatar"><img src="/images/icons8-team-355979.png" alt="Profile Image"></a>
+                  <a class="avatar"><img src="/blog/images/avatars/icons8-team-355979.png" alt="Profile Image"></a>
                 </div>
                 <div class="middle-area">
                   <router-link class="name" to="/about"><b>{{ article.author }}</b></router-link>
@@ -63,10 +63,10 @@
           <div class="card h-100">
             <div class="single-post post-style-1">
               <div class="blog-image">
-                <img :src="article.cover ? `/images/${article.cover}` : '/images/default-cover.jpg'" alt="Blog Image" />
+                <img :src="article.cover ? `/blog/images/covers/${article.cover}` : '/blog/images/covers/default-cover.jpg'" alt="Blog Image" />
               </div>
               <a class="avatar" href="javascript:void(0)">
-                <img src="/images/icons8-team-355979.png" alt="Profile Image" />
+                <img src="/blog/images/avatars/icons8-team-355979.png" alt="Profile Image" />
               </a>
               <div class="blog-info">
                 <h4 class="title">
@@ -104,7 +104,7 @@ const renderedContent = ref('')
 const tags = ref<any[]>([])
 const relatedArticles = ref<any[]>([])
 
-const coverUrl = computed(() => article.value?.cover ? `/images/${article.value.cover}` : '/images/default-cover.jpg')
+const coverUrl = computed(() => article.value?.cover ? `/blog/images/covers/${article.value.cover}` : '/blog/images/covers/default-cover.jpg')
 
 const loadArticle = async () => {
   const slug = route.query.v?.toString() || ''

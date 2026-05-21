@@ -7,10 +7,10 @@
             <div class="card h-100">
               <div class="single-post post-style-1">
                 <div class="blog-image">
-                  <img :src="article.cover ? `/images/${article.cover}` : '/images/default-cover.jpg'" alt="Blog Image" />
+                  <img :src="article.cover ? `/blog/images/covers/${article.cover}` : '/blog/images/covers/default-cover.jpg'" alt="Blog Image" />
                 </div>
                 <a class="avatar" href="javascript:void(0)">
-                  <img src="/images/icons8-team-355979.png" alt="Profile Image" />
+                  <img src="/blog/images/avatars/icons8-team-355979.png" alt="Profile Image" />
                 </a>
                 <div class="blog-info">
                   <h4 class="title">

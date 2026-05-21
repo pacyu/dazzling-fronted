@@ -3,7 +3,7 @@
     <template v-if="!isAdminRoute">
       <header>
         <div class="container-fluid position-relative no-side-padding">
-          <a href="/" class="logo"><img src="/images/home.png" alt="Logo Image"></a>
+          <a href="/" class="logo"><img src="/blog/images/home.png" alt="Logo Image"></a>
           <div class="menu-nav-icon" data-nav-menu="#main-menu" @click="toggleMobileMenu">
             <i class="ion-navicon"></i>
           </div>
@@ -38,7 +38,7 @@
           <div class="row">
             <div class="col-lg-4 col-md-6">
               <div class="footer-section">
-                <a class="logo" href="/"><img src="/images/logo.jpg" alt="Logo Image"></a>
+                <a class="logo" href="/"><img src="/blog/images/logo.jpg" alt="Logo Image"></a>
                 <p class="copyright">Dazzling &copy; {{ currentYear }}. All rights reserved.</p>
                 <ul class="icons">
                   <li><a href="https://www.youtube.com/channel/UCv0ZUlQUTY6moeIaGST0NFQ"><i class="ion-social-youtube-outline"></i></a></li>

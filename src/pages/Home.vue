@@ -12,7 +12,7 @@
                 <p>{{ article.introduction }}</p>
                 <div class="avatar-area">
                   <router-link class="avatar" to="/about">
-                    <img src="/images/icons8-team-355979.png" alt="Profile Image">
+                    <img src="/blog/images/avatars/icons8-team-355979.png" alt="Profile Image">
                   </router-link>
                   <div class="right-area">
                     <router-link class="name" to="/about"><b>{{ article.author }}</b></router-link>

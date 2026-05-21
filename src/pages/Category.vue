@@ -5,7 +5,7 @@
         <div class="swiper-wrapper">
           <div class="swiper-slide" v-for="cat in categories" :key="cat.slug">
             <a class="slider-category" @click.prevent="selectCategory(cat.name)">
-              <div class="blog-image"><img :src="`/images/${cat.bgImage}`" alt="Category Image"></div>
+              <div class="blog-image"><img :src="`/blog/images/covers/${cat.cover}`" alt="Category Image"></div>
               <div class="category">
                 <div class="display-table center-text">
                   <div class="display-table-cell">

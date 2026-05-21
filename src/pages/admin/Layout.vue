@@ -4,7 +4,7 @@
     <el-aside width="220px" class="admin-sidebar">
       <div class="sidebar-header">
         <router-link to="/admin/dashboard">
-          <img src="/images/home.png" alt="Logo" style="height: 32px;">
+          <img src="/blog/images/home.png" alt="Logo" style="height: 32px;">
         </router-link>
       </div>
       <!-- 额外按钮组：返回主页 + 主题切换 -->

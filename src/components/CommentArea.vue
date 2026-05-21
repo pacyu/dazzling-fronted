@@ -54,7 +54,7 @@
               <div class="post-info">
                 <div class="left-area">
                   <a class="avatar" href="#">
-                    <img src="/images/icons8-team-355979.png" alt="Profile Image" />
+                    <img src="/blog/images/avatars/icons8-team-355979.png" alt="Profile Image" />
                   </a>
                 </div>
                 <div class="middle-area">
@@ -128,7 +128,7 @@
                 <div class="post-info">
                   <div class="left-area">
                     <a class="avatar" href="#">
-                      <img src="/images/icons8-team-355979.png" alt="Profile Image" />
+                      <img src="/blog/images/avatars/icons8-team-355979.png" alt="Profile Image" />
                     </a>
                   </div>
                   <div class="middle-area">

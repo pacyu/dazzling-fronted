@@ -6,9 +6,10 @@
 
 ![截图1](/examples/screenshot1.png)
 ![截图2](/examples/screenshot2.png)
-![截图5](/examples/screenshot5.png)
 ![截图3](/examples/screenshot3.png)
 ![截图4](/examples/screenshot4.png)
+![截图5](/examples/screenshot5.png)
+![截图6](/examples/screenshot6.png)
 
 ## 如何运行
 
