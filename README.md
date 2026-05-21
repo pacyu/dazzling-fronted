@@ -4,12 +4,7 @@
 
 ## 前后台 UI 展示
 
-![截图1](/examples/screenshot1.png)
-![截图2](/examples/screenshot2.png)
-![截图3](/examples/screenshot3.png)
-![截图4](/examples/screenshot4.png)
-![截图5](/examples/screenshot5.png)
-![截图6](/examples/screenshot6.png)
+[点这里查看效果](https://pacyu.github.io/dazzling/)
 
 ## 如何运行
 
